@@ -1,0 +1,106 @@
+# 2.1 Remove Duplicates from an Unsorted Linked List
+
+## Description
+Write code to remove duplicates from an unsorted linked list. 
+
+### Follow Up
+How would you solve this problem if a temporary buffer is not allowed?
+
+**Example**
+
+Before removing duplicates:
+```
+3 --> 2 --> 3 --> 4 --> 1
+```
+
+After removing duplicates:
+```
+3 --> 2 --> 4 --> 1
+```
+
+## Explanation
+The `LinkedList` class provides two methods to remove duplicates from an unsorted linked list. The `removeDuplicatesBuffer` method uses a set to track seen values and removes any duplicate nodes. The `removeDuplicate` method solves the problem without using a temporary buffer by using a runner technique to compare each node with all subsequent nodes.
+
+### Complexity
+#### `removeDuplicatesBuffer` Method
+##### Time Complexity:
+- The time complexity of the `removeDuplicatesBuffer` method is 𝑂(𝑛), where 𝑛 is the number of nodes in the linked list. This is because each node is visited once, and set operations (add and check) are 𝑂(1).
+
+##### Space Complexity:
+- The space complexity of the `removeDuplicatesBuffer` method is 𝑂(𝑛) due to the additional set used to store seen values.
+
+#### `removeDuplicate` Method
+##### Time Complexity:
+- The time complexity of the `removeDuplicate` method is 𝑂(𝑛^2), where 𝑛 is the number of nodes in the linked list. This is because each node is compared with all subsequent nodes in a nested loop.
+
+##### Space Complexity:
+- The space complexity of the `removeDuplicate` method is 𝑂(1) as it does not use any additional space proportional to the input size.
+
+### Python Code
+
+```python
+class Node:
+    def __init__(self, data=None, next=None):
+        self.data = data
+        self.next = next
+
+class LinkedList:
+    def __init__(self):
+        self.head = None
+
+    def print(self):
+        if self.head is None:
+            print("Linked List is empty")
+            return
+        itr = self.head
+        llstr = ""
+        while itr:
+            llstr += '-->' + str(itr.data)
+            itr = itr.next
+        print(llstr)
+
+    def insertAtEnd(self, data):
+        if self.head is None:
+            self.head = Node(data, None)
+            return
+        itr = self.head
+        while itr.next:
+            itr = itr.next
+        itr.next = Node(data, None)
+
+    def removeDuplicatesBuffer(self):
+        itr = self.head
+        prev = None
+        seen = set()
+        while itr:
+            if itr.data in seen:
+                prev.next = itr.next
+            else:
+                seen.add(itr.data)
+                prev = itr
+            itr = itr.next
+
+    def removeDuplicate(self):
+        itr = self.head
+        while itr:
+            runner = itr
+            while runner.next:
+                if runner.next.data == itr.data:
+                    runner.next = runner.next.next
+                else:
+                    runner = runner.next
+            itr = itr.next
+
+if __name__ == '__main__':
+    ll = LinkedList()
+    ll.insertAtEnd(3)
+    ll.insertAtEnd(2)
+    ll.insertAtEnd(3)
+    ll.insertAtEnd(4)
+    ll.insertAtEnd(1)
+    ll.print()
+    ll.removeDuplicate()  # Use ll.removeDuplicatesBuffer() to use the method with buffer
+    ll.print()
+```
+
+By following this structure, the linked list class can effectively remove duplicates, providing a clear understanding of its process and complexity.
